@@ -7,7 +7,6 @@ function App() {
 
   return (
    <div>
-  
       <Counter />
         <Pokelist></Pokelist>
    </div> 
