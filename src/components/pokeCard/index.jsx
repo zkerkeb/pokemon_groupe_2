@@ -1,28 +1,15 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router";
+import usePokemon from "../../hook/usePokemon";
 
 import './index.css';
 import PokeTitle from "./pokeTitle";
 import PokeImage from "./pokeImage";
 
 const PokeCard = ({ pokemon }) => {
-    const [pokeState, setPokeState] = useState({});
-    const [loading, setLoading] = useState(true);
+    const {pokemonData, loading} = usePokemon(pokemon.url);
+    console.log('pokeData',pokemonData)
 
-    useEffect(() => {
-        fetch(pokemon.url)
-            .then((response) => response.json())
-            .then((data) => {
-                setPokeState(data);
-                console.log("Détails du Pokémon reçus:", data);
-            })
-            .catch((error) => {
-                console.error("Erreur lors de la récupération des détails du Pokémon:", error);
-            }).finally(() => {
-                setLoading(false);
-            });
-
-
-    }, [pokemon]);
 
     if (loading) {
         return <p>Chargement du Pokémon...</p>;
@@ -30,16 +17,17 @@ const PokeCard = ({ pokemon }) => {
 
 
     return (
+        <Link to={`/pokemonDetails/${encodeURIComponent(pokemon.url)}`}>
         <div className="poke-card">
-            <div className={`poke-card-header poke-type-${pokeState.types?.[0]?.type?.name}`}>
+            <div className={`poke-card-header poke-type-${pokemonData.types?.[0]?.type?.name}`}>
                 <PokeTitle name={pokemon.name} />
             </div>
             <div className="poke-image-background">
-                <PokeImage imageUrl={pokeState.sprites?.other?.['official-artwork']?.front_default} />
+                <PokeImage imageUrl={pokemonData.sprites?.other?.['official-artwork']?.front_default} />
             </div>
             <div>
 
-                {pokeState.stats?.map((stat) => {
+                {pokemonData.stats?.map((stat) => {
                     return(
                         <div className="poke-stat-row" key={stat.stat.name}>
                             <span className={`poke-type-font poke-type-${stat.stat.name}`}>{stat.stat.name}</span>
@@ -49,10 +37,9 @@ const PokeCard = ({ pokemon }) => {
                     ) 
                 })}    
 
-                {/* <p>{pokeState?.stats[0]?.base_stat}</p>
-                <p>{pokeState?.stats[0]?.stat?.name}</p> */}
             </div>
         </div>
+        </Link>
     );
 }
 
