@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import './App.css'
 import Pokelist from './components/pokelist'
 import { Link, useNavigate } from 'react-router'
+import Pokedex from './components/pokedex';
+
 
 function App() {
   const navigate = useNavigate();
@@ -24,7 +26,8 @@ function App() {
     <div>
 
       <Link to="/pokemonDetails">Voir les détails du Pokémon</Link>
-      <Pokelist></Pokelist>
+      {/* <Pokelist></Pokelist> */}
+      <Pokedex></Pokedex>
     </div>
   )
 
